@@ -1,0 +1,19 @@
+{
+  "name": "hacknomics2025",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gingerboi8950/hacknomics2025.git"
+  },
+  "author": "Mason, Shane, Brody, Josh, and Raul",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gingerboi8950/hacknomics2025/issues"
+  },
+  "homepage": "https://github.com/gingerboi8950/hacknomics2025#readme"
+}

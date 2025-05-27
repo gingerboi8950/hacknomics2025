@@ -18,5 +18,29 @@ async function ConnectToDB() {
   }
 }
 
+async function signUp(newUser, newPass) {
+  const user = new User({
+    username: newUser,
+    password: newPass,
+  });
+  console.log(user);
+  await user.save();
+}
+
+async function login(user, pass) {
+  try {
+    const userData = await User.find({ username: user, password: pass }).exec();
+    console.log(userData);
+    if (userData.length === 0) {
+      return false;
+    } else {
+      return true;
+    }
+  } catch (error) {
+    console.error("Error during login: ", error);
+    return false;
+  }
+}
+
 ConnectToDB();
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

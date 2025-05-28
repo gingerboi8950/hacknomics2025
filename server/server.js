@@ -1,11 +1,21 @@
 import mongoose from "mongoose";
 import express from "express";
 import dotenv from "dotenv";
+import cors from "cors";
+import expenseRoutes from "./api/users.js";
+import userRoutes from "./api/expenses.js";
 
 dotenv.config();
 const DB_URI = process.env.DB_URI;
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 5000;
 const app = express();
+
+app.use(express.json());
+app.use(cors());
+app.use("/login", userRoutes);
+app.use("/home", expenseRoutes);
+ConnectToDB();
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 
 async function ConnectToDB() {
   try {
@@ -17,30 +27,3 @@ async function ConnectToDB() {
     process.exit();
   }
 }
-
-async function signUp(newUser, newPass) {
-  const user = new User({
-    username: newUser,
-    password: newPass,
-  });
-  console.log(user);
-  await user.save();
-}
-
-async function login(user, pass) {
-  try {
-    const userData = await User.find({ username: user, password: pass }).exec();
-    console.log(userData);
-    if (userData.length === 0) {
-      return false;
-    } else {
-      return true;
-    }
-  } catch (error) {
-    console.error("Error during login: ", error);
-    return false;
-  }
-}
-
-ConnectToDB();
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

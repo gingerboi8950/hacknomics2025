@@ -36,6 +36,7 @@ export function UserAuthForm({
               id="email"
               placeholder="name@example.com"
               type="email"
+              className="w-full"
               autoCapitalize="none"
               autoComplete="email"
               autoCorrect="off"

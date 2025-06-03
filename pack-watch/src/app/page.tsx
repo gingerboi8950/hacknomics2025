@@ -2,7 +2,12 @@
 import { useState } from "react";
 import axios from "axios";
 
+
+
+
 export default function Home() {
+ 
+  
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const handleLogin = async () => {
@@ -17,6 +22,8 @@ export default function Home() {
       alert("Login failed"), console.log("Login failed");
     }
   };
+
+  
 
   const handleSignUp = async () => {
     try {
@@ -45,6 +52,7 @@ export default function Home() {
         placeholder="password"
       />
       <button onClick={handleSignUp}>Button</button>
+      <a href="/api/auth0/login">Login</a>
     </div>
   );
 }

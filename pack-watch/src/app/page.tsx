@@ -1,50 +1,13 @@
-"use client";
-import { useState } from "react";
-import axios from "axios";
+// src/app/auth/page.tsx
+import { UserAuthForm } from "@/components/user-auth-form";
 
-export default function Home() {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const handleLogin = async () => {
-    try {
-      const response = await axios.post("http://localhost:5000/login", {
-        username,
-        password,
-      });
-      console.log("Login successful", response.data);
-      window.location.href = "/expenses";
-    } catch (error) {
-      alert("Login failed"), console.log("Login failed");
-    }
-  };
-
-  const handleSignUp = async () => {
-    try {
-      console.log(password);
-      console.log(username);
-      const response = await axios.post("http://localhost:5000/", {
-        username,
-        password,
-      });
-      window.location.href = "/";
-    } catch (error) {
-      console.log("Sign-up failed.");
-    }
-  };
-
+export default function AuthPage() {
   return (
-    <div>
-      <input
-        type="text"
-        onChange={(e) => setUsername(e.target.value)}
-        placeholder="username"
-      />
-      <input
-        type="text"
-        onChange={(e) => setPassword(e.target.value)}
-        placeholder="password"
-      />
-      <button onClick={handleSignUp}>Button</button>
+    <div className="min-h-screen flex items-center justify-center bg-gray-100">
+      <div className="w-full max-w-md p-8 bg-white rounded-2xl shadow-md">
+        <h1 className="text-2xl font-semibold text-center mb-6">Sign In</h1>
+        <UserAuthForm />
+      </div>
     </div>
   );
 }

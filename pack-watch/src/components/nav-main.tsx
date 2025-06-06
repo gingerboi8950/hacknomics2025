@@ -43,13 +43,16 @@ export function NavMain({
           </SidebarMenuItem>
         </SidebarMenu>
         <SidebarMenu>
+          {/* This section Handles Dashboard, Calendar, Analystics, Projects, Team Text */}
           {items.map((item) => (
-            <SidebarMenuItem key={item.title}>
-              <SidebarMenuButton tooltip={item.title}>
-                {item.icon && <item.icon />}
-                <span>{item.title}</span>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
+          <SidebarMenuButton asChild 
+          tooltip={item.title} 
+          className= "gap-2 text-[#003A5D] hover:bg-[#72D24F] hover:text-white rounded-md px-2 py-1 font-semibold">
+          <a href={item.url}>
+            {item.icon && <item.icon className="text-[#003A5D]" />}
+            <span className="text-lg font-bold">{item.title}</span>
+          </a>
+        </SidebarMenuButton>
           ))}
         </SidebarMenu>
       </SidebarGroupContent>

@@ -1,16 +1,16 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { useState } from "react"
-
-import { cn } from "@/lib/utils"
-import { Icon } from "@/components/ui/icon"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
+import * as React from "react";
+import { cn } from "@/lib/utils";
+import { Icon } from "@/components/ui/icon";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { useState } from "react";
+import axios from "axios";
 
 interface UserAuthFormProps extends React.ComponentProps<"div"> {
-  mode?: "sign-in" | "sign-up"
+  mode?: "sign-in" | "sign-up";
 }
 
 export function UserAuthForm({
@@ -18,20 +18,71 @@ export function UserAuthForm({
   mode = "sign-in",
   ...props
 }: UserAuthFormProps) {
-  const [isLoading, setIsLoading] = React.useState<boolean>(false)
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
-
+  const [isLoading, setIsLoading] = React.useState<boolean>(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   async function onSubmit(event: React.SyntheticEvent) {
-    event.preventDefault()
-    setIsLoading(true)
-
-    // Simulate form processing
+    event.preventDefault();
+    setIsLoading(true);
+    // console.log(email);
+    // console.log(password);
+    // axios
+    //   .post("http://localhost:5000/login", {
+    //     email,
+    //     password,
+    //   })
+    //   .then((response) => {
+    //     console.log("Success:", response.data);
+    //   })
+    //   .catch((error) => {
+    //     console.error("Error:", error);
+    //   });
+    console.log(password);
+    console.log(email);
+    axios
+      .post("http://localhost:5000/signup", {
+        email,
+        password,
+      })
+      .then((response) => {
+        console.log("Success:", response.data);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
     setTimeout(() => {
-      setIsLoading(false)
-    }, 3000)
+      setIsLoading(false);
+    }, 3000);
   }
 
+  const handleLogin = async () => {
+    axios
+      .post("http://localhost:5000/login", {
+        email,
+        password,
+      })
+      .then((response) => {
+        console.log("Success:", response.data);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  };
+  const handleSignUp = async () => {
+    console.log(password);
+    console.log(email);
+    axios
+      .post("http://localhost:5000/signup", {
+        email,
+        password,
+      })
+      .then((response) => {
+        console.log("Success:", response.data);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  };
   return (
     <div className={cn("grid gap-6", className)} {...props}>
       <form onSubmit={onSubmit}>
@@ -48,8 +99,8 @@ export function UserAuthForm({
               autoCapitalize="none"
               autoComplete="email"
               autoCorrect="off"
-              disabled={isLoading}
               onChange={(e) => setEmail(e.target.value)}
+              disabled={isLoading}
             />
             <Input
               id="password"
@@ -63,11 +114,12 @@ export function UserAuthForm({
               disabled={isLoading}
             />
           </div>
-          <Button disabled={isLoading} onClick={onSubmit}>
+
+          <Button disabled={isLoading} type="submit">
             {isLoading && (
               <Icon name="Loader2" className="mr-2 h-4 w-4 animate-spin" />
             )}
-            {mode === "sign-up" ? "Sign Up" : "Sign In"}
+            Sign In
           </Button>
         </div>
       </form>
@@ -108,5 +160,5 @@ export function UserAuthForm({
         </div>
       )}
     </div>
-  )
+  );
 }

@@ -1,0 +1,23 @@
+
+
+export default function Home() {
+
+  };
+
+  return (
+    <div>
+      <input
+        type="text"
+        
+        placeholder="username"
+      />
+      <input
+        type="text"
+        
+        placeholder="password"
+      />
+      <button onClick={handleSignUp}>Button</button>
+      <a href="/api/auth0/login">Login</a>
+    </div>
+  );
+}

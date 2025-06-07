@@ -7,6 +7,7 @@ import { Icon } from "@/components/ui/icon"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { useState } from "react"
 
 
 export function UserAuthForm({
@@ -14,6 +15,8 @@ export function UserAuthForm({
   ...props
 }: React.ComponentProps<"div">) {
   const [isLoading, setIsLoading] = React.useState<boolean>(false)
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   async function onSubmit(event: React.SyntheticEvent) {
     event.preventDefault()
@@ -42,12 +45,23 @@ export function UserAuthForm({
               autoCorrect="off"
               disabled={isLoading}
             />
+            <Input
+              id="password"
+              placeholder="Password"
+              type="password"
+              className="w-full"
+              autoCapitalize="none"
+              autoComplete="new-password"
+              autoCorrect="off"
+              onChange={(e) => setPassword(e.target.value)}
+              disabled={isLoading}
+            />
           </div>
-          <Button disabled={isLoading}>
+          <Button disabled={isLoading} onClick={onSubmit}>
             {isLoading && (
               <Icon name="Loader2" className="mr-2 h-4 w-4 animate-spin" />
             )}
-            Sign In with Email
+            Sign In
           </Button>
         </div>
       </form>
@@ -71,6 +85,13 @@ export function UserAuthForm({
         )}{" "}
         GitHub
       </Button>
+      <div className="text-left text-sm text-muted-foreground mt-2">
+        Don’t have an account?{" "}
+        <a href="/signup" className="underline hover:text-primary">
+          Create one
+        </a>
+      </div>
+
     </div>
   )
 }

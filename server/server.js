@@ -2,8 +2,8 @@ import mongoose from "mongoose";
 import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
-import expenseRoutes from "./api/users.js";
-import userRoutes from "./api/expenses.js";
+import expenseRoutes from "./api/expenses.js";
+import userRoutes from "./api/users.js";
 
 dotenv.config();
 const DB_URI = process.env.DB_URI;
@@ -12,8 +12,9 @@ const app = express();
 
 app.use(express.json());
 app.use(cors());
-app.use("/login", userRoutes);
-app.use("/home", expenseRoutes);
+app.use("/", userRoutes);
+app.use("/api/expense", expenseRoutes);
+
 ConnectToDB();
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 
@@ -27,5 +28,3 @@ async function ConnectToDB() {
     process.exit();
   }
 }
-
-

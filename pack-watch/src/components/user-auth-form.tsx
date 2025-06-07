@@ -1,27 +1,32 @@
-"use client";
+"use client"
 
 import * as React from "react"
+import { useState } from "react"
 
 import { cn } from "@/lib/utils"
 import { Icon } from "@/components/ui/icon"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { useState } from "react"
 
+interface UserAuthFormProps extends React.ComponentProps<"div"> {
+  mode?: "sign-in" | "sign-up"
+}
 
 export function UserAuthForm({
   className,
+  mode = "sign-in",
   ...props
-}: React.ComponentProps<"div">) {
+}: UserAuthFormProps) {
   const [isLoading, setIsLoading] = React.useState<boolean>(false)
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
 
   async function onSubmit(event: React.SyntheticEvent) {
     event.preventDefault()
     setIsLoading(true)
 
+    // Simulate form processing
     setTimeout(() => {
       setIsLoading(false)
     }, 3000)
@@ -44,6 +49,7 @@ export function UserAuthForm({
               autoComplete="email"
               autoCorrect="off"
               disabled={isLoading}
+              onChange={(e) => setEmail(e.target.value)}
             />
             <Input
               id="password"
@@ -61,10 +67,11 @@ export function UserAuthForm({
             {isLoading && (
               <Icon name="Loader2" className="mr-2 h-4 w-4 animate-spin" />
             )}
-            Sign In
+            {mode === "sign-up" ? "Sign Up" : "Sign In"}
           </Button>
         </div>
       </form>
+
       <div className="relative">
         <div className="absolute inset-0 flex items-center">
           <span className="w-full border-t" />
@@ -75,23 +82,31 @@ export function UserAuthForm({
           </span>
         </div>
       </div>
+
       <Button variant="outline" type="button" disabled={isLoading}>
         {isLoading ? (
           <Icon name="Loader2" className="mr-2 h-4 w-4 animate-spin" />
-
         ) : (
           <Icon name="Github" className="mr-2 h-4 w-4" />
-
-        )}{" "}
-        GitHub
+        )}
+        {mode === "sign-up" ? "Sign Up with Google" : "Sign In with Google"}
       </Button>
-      <div className="text-left text-sm text-muted-foreground mt-2">
-        Don’t have an account?{" "}
-        <a href="/signup" className="underline hover:text-primary">
-          Create one
-        </a>
-      </div>
 
+      {mode === "sign-in" ? (
+        <div className="text-left text-sm text-muted-foreground mt-2">
+          Don’t have an account?{" "}
+          <a href="/signup" className="underline hover:text-primary">
+            Create one
+          </a>
+        </div>
+      ) : (
+        <div className="text-left text-sm text-muted-foreground mt-2">
+          Already have an account?{" "}
+          <a href="/" className="underline hover:text-primary">
+            Sign in
+          </a>
+        </div>
+      )}
     </div>
   )
 }

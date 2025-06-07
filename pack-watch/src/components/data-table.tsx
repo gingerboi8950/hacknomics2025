@@ -181,7 +181,7 @@ const columns: ColumnDef<z.infer<typeof schema>>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: "type",
+    accessorKey: "Category",
     header: "Category",
     cell: ({ row }) => (
       <div className="w-32">
@@ -206,7 +206,7 @@ const columns: ColumnDef<z.infer<typeof schema>>[] = [
   //   ),
   // },
   {
-    accessorKey: "target",
+    accessorKey: "Price",
     header: () => <div className="w-full text-left">Price</div>,
     cell: ({ row }) => (
       <form
@@ -231,7 +231,7 @@ const columns: ColumnDef<z.infer<typeof schema>>[] = [
     ),
   },
   {
-    accessorKey: "limit",
+    accessorKey: "Date",
     header: () => <div className="w-full">Date</div>,
     cell: ({ row }) => (
       <form
@@ -621,7 +621,7 @@ export function DataTable({
           </div>
         </div>
       </TabsContent>
-      <TabsContent
+      {/* <TabsContent
         value="past-performance"
         className="flex flex-col px-4 lg:px-6"
       >
@@ -635,7 +635,7 @@ export function DataTable({
         className="flex flex-col px-4 lg:px-6"
       >
         <div className="aspect-video w-full flex-1 rounded-lg border border-dashed"></div>
-      </TabsContent>
+      </TabsContent> */}
     </Tabs>
   )
 }

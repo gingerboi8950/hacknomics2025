@@ -8,6 +8,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useState } from "react";
 import axios from "axios";
+import { signIn } from "next-auth/react"; // ✅ Import Google sign-in handler
+import { FcGoogle } from "react-icons/fc";
 
 interface UserAuthFormProps extends React.ComponentProps<"div"> {
   mode?: "sign-in" | "sign-up";
@@ -21,68 +23,29 @@ export function UserAuthForm({
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
   async function onSubmit(event: React.SyntheticEvent) {
     event.preventDefault();
     setIsLoading(true);
-    // console.log(email);
-    // console.log(password);
-    // axios
-    //   .post("http://localhost:5000/login", {
-    //     email,
-    //     password,
-    //   })
-    //   .then((response) => {
-    //     console.log("Success:", response.data);
-    //   })
-    //   .catch((error) => {
-    //     console.error("Error:", error);
-    //   });
-    console.log(password);
-    console.log(email);
+
+    const endpoint = mode === "sign-up" ? "signup" : "login";
     axios
-      .post("http://localhost:5000/signup", {
-        email,
-        password,
-      })
+      .post(`http://localhost:5000/${endpoint}`, { email, password })
       .then((response) => {
         console.log("Success:", response.data);
       })
       .catch((error) => {
         console.error("Error:", error);
+      })
+      .finally(() => {
+        setTimeout(() => setIsLoading(false), 3000);
       });
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 3000);
   }
 
-  const handleLogin = async () => {
-    axios
-      .post("http://localhost:5000/login", {
-        email,
-        password,
-      })
-      .then((response) => {
-        console.log("Success:", response.data);
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
+  const handleGoogleAuth = () => {
+    signIn("google", { callbackUrl: "/" }); // ✅ Initiates Google OAuth
   };
-  const handleSignUp = async () => {
-    console.log(password);
-    console.log(email);
-    axios
-      .post("http://localhost:5000/signup", {
-        email,
-        password,
-      })
-      .then((response) => {
-        console.log("Success:", response.data);
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
-  };
+
   return (
     <div className={cn("grid gap-6", className)} {...props}>
       <form onSubmit={onSubmit}>
@@ -119,7 +82,7 @@ export function UserAuthForm({
             {isLoading && (
               <Icon name="Loader2" className="mr-2 h-4 w-4 animate-spin" />
             )}
-            Sign In
+            {mode === "sign-up" ? "Sign Up" : "Sign In"}
           </Button>
         </div>
       </form>
@@ -135,11 +98,16 @@ export function UserAuthForm({
         </div>
       </div>
 
-      <Button variant="outline" type="button" disabled={isLoading}>
+      <Button
+        variant="outline"
+        type="button"
+        disabled={isLoading}
+        onClick={handleGoogleAuth}
+      >
         {isLoading ? (
           <Icon name="Loader2" className="mr-2 h-4 w-4 animate-spin" />
         ) : (
-          <Icon name="Github" className="mr-2 h-4 w-4" />
+          <FcGoogle className="mr-2 h-4 w-4" /> // You can replace this with a Google icon
         )}
         {mode === "sign-up" ? "Sign Up with Google" : "Sign In with Google"}
       </Button>

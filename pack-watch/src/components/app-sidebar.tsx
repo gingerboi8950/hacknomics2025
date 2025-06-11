@@ -17,6 +17,9 @@ import {
   IconSearch,
   IconSettings,
   IconUsers,
+  IconCalendarWeek,
+  IconMoneybag,
+  IconCashBanknote,
 } from "@tabler/icons-react"
 
 import { NavDocuments } from "@/components/nav-documents"
@@ -46,19 +49,19 @@ const data = {
       icon: IconDashboard,
     },
     {
-      title: "Lifecycle",
+      title: "Calendar",
       url: "#",
-      icon: IconListDetails,
+      icon: IconCalendarWeek,
     },
     {
-      title: "Analytics",
+      title: "Expenses",
       url: "#",
-      icon: IconChartBar,
+      icon: IconCashBanknote,
     },
     {
-      title: "Projects",
+      title: "Budget",
       url: "#",
-      icon: IconFolder,
+      icon: IconMoneybag,
     },
     {
       title: "Team",
@@ -160,10 +163,12 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               asChild
               className="data-[slot=sidebar-menu-button]:!p-1.5"
             >
-              <a href="#">
-                <IconInnerShadowTop className="!size-5" />
-                <span className="text-base font-semibold">Acme Inc.</span>
-              </a>
+              <a href="#" className="flex items-center gap-2">
+              <img src="/PackTrack-modified.png" alt="Logo"  className="w-12 h-12 rounded-full mr-2" />
+
+              <span className="text-[#003A5D] text-lg font-bold">Pack Track</span>
+            </a>
+
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>

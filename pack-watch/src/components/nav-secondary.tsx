@@ -22,6 +22,7 @@ export function NavSecondary({
   }[]
 } & React.ComponentPropsWithoutRef<typeof SidebarGroup>) {
   return (
+    // This section Changes the Settings, Get Help, Search
     <SidebarGroup {...props}>
       <SidebarGroupContent>
         <SidebarMenu>

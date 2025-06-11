@@ -43,7 +43,7 @@ export function UserAuthForm({
   }
 
   const handleGoogleAuth = () => {
-    signIn("google", { callbackUrl: "/" }); //  Initiates Google OAuth
+    window.location.href = 'http://localhost:5000/auth/google'; //  Initiates Google OAuth
   };
 
   return (

@@ -23,7 +23,34 @@ export default function DateCalendarValue() {
       <div className="p-4 flex flex-col items-center">
         <DemoItem label="Pick a date">
           <div className="flex justify-center">
-            <DateCalendar value={selectedDate} onChange={(newValue) => setSelectedDate(newValue)} />
+            <DateCalendar
+              value={selectedDate}
+              onChange={(newValue) => setSelectedDate(newValue)}
+              sx={{
+                width: 400, // widen the whole calendar container
+                '& .MuiPickersDay-root': {
+                  fontSize: '1.25rem', // make day numbers larger
+                  width: 48,
+                  height: 48,
+                },
+                '& .MuiDayCalendar-weekDayLabel': {
+                  width: 48,
+                  fontSize: '1rem',
+                },
+                '& .MuiTypography-root': {
+                  fontSize: '1.2rem', // month/year font size
+                },
+                '& .MuiPickersCalendarHeader-label': {
+                  fontSize: '1.5rem', // larger month label
+                },
+                '& .MuiPickersArrowSwitcher-root button': {
+                  fontSize: '1.5rem', // larger nav arrows
+                },
+                '& .MuiPickersSlideTransition-root': {
+                  minHeight: '320px', // optional: make sure there's enough height
+                },
+              }}
+            />
           </div>
         </DemoItem>
 

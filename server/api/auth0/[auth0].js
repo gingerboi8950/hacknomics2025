@@ -1,21 +1,46 @@
-// lib/auth0.js
+import express from 'express';
+import axios from 'axios';
+import dotenv from 'dotenv';
 
-import { Auth0Client } from "@auth0/nextjs-auth0/server";
+dotenv.config();
+const router = express.Router();
 
-// Initialize the Auth0 client 
-export const auth0 = new Auth0Client({
-  // Options are loaded from environment variables by default
-  // Ensure necessary environment variables are properly set
-   domain: process.env.AUTH0_DOMAIN,
-   clientId: process.env.AUTH0_CLIENT_ID,
-   clientSecret: process.env.AUTH0_CLIENT_SECRET,
-   appBaseUrl: process.env.APP_BASE_URL,
-   secret: process.env.AUTH0_SECRET,
+// Step 1: Redirect user to Google
+router.get('/google', (req, res) => {
+  const redirectUrl = `https://accounts.google.com/o/oauth2/v2/auth?response_type=code&client_id=${process.env.GOOGLE_CLIENT_ID}&redirect_uri=${process.env.GOOGLE_REDIRECT_URI}&scope=openid%20email%20profile`;
+  res.redirect(redirectUrl);
+});
 
-  authorizationParameters: {
-    // In v4, the AUTH0_SCOPE and AUTH0_AUDIENCE environment variables for API authorized applications are no longer automatically picked up by the SDK.
-    // Instead, we need to provide the values explicitly.
-    scope: process.env.AUTH0_SCOPE,
-    audience: process.env.AUTH0_AUDIENCE,
+// Step 2: Handle callback and exchange code
+router.get('/google/callback', async (req, res) => {
+  const code = req.query.code;
+
+  try {
+    const tokenRes = await axios.post('https://oauth2.googleapis.com/token', {
+      code,
+      client_id: process.env.GOOGLE_CLIENT_ID,
+      client_secret: process.env.GOOGLE_CLIENT_SECRET,
+      redirect_uri: process.env.GOOGLE_REDIRECT_URI,
+      grant_type: 'authorization_code',
+    });
+
+    const { access_token } = tokenRes.data;
+
+    const userRes = await axios.get('https://www.googleapis.com/oauth2/v2/userinfo', {
+      headers: { Authorization: `Bearer ${access_token}` },
+    });
+
+    const user = userRes.data; // contains name, email, picture, etc.
+
+    // Here you'd create a session or JWT
+    console.log('Authenticated user:', user);
+
+    // For now, just redirect to frontend
+    res.redirect('http://localhost:3001/dashboard');
+  } catch (err) {
+    console.error('OAuth error:', err.response?.data || err.message);
+    res.status(500).send('Authentication failed');
   }
 });
+
+export default router;

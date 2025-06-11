@@ -8,6 +8,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useState } from "react";
 import axios from "axios";
+import { signIn } from "next-auth/react"; //  Import Google sign-in handler
+import { FcGoogle } from "react-icons/fc";
 
 interface UserAuthFormProps extends React.ComponentProps<"div"> {
   mode?: "sign-in" | "sign-up";
@@ -21,6 +23,7 @@ export function UserAuthForm({
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
   async function onSubmit(event: React.SyntheticEvent) {
     event.preventDefault();
     setIsLoading(true);
@@ -57,6 +60,7 @@ export function UserAuthForm({
         console.error("Error:", error);
       });
   };
+
   return (
     <div className={cn("grid gap-6", className)} {...props}>
       <form onSubmit={onSubmit}>
@@ -93,7 +97,7 @@ export function UserAuthForm({
             {isLoading && (
               <Icon name="Loader2" className="mr-2 h-4 w-4 animate-spin" />
             )}
-            Sign In
+            {mode === "sign-up" ? "Sign Up" : "Sign In"}
           </Button>
         </div>
       </form>
@@ -113,7 +117,7 @@ export function UserAuthForm({
         {isLoading ? (
           <Icon name="Loader2" className="mr-2 h-4 w-4 animate-spin" />
         ) : (
-          <Icon name="Github" className="mr-2 h-4 w-4" />
+          <FcGoogle className="mr-2 h-4 w-4" /> // You can replace this with a Google icon
         )}
         {mode === "sign-up" ? "Sign Up with Google" : "Sign In with Google"}
       </Button>

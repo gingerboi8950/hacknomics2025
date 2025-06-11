@@ -1,5 +1,5 @@
 import type { NextRequest } from "next/server";
-import { auth0 } from "./api/auth0/[auth0]";
+import { auth0 } from "../api/auth0/[auth0]";
 
 
 export async function middleware(request: NextRequest) {

@@ -24,35 +24,7 @@ export function UserAuthForm({
   async function onSubmit(event: React.SyntheticEvent) {
     event.preventDefault();
     setIsLoading(true);
-    // console.log(email);
-    // console.log(password);
-    // axios
-    //   .post("http://localhost:5000/login", {
-    //     email,
-    //     password,
-    //   })
-    //   .then((response) => {
-    //     console.log("Success:", response.data);
-    //   })
-    //   .catch((error) => {
-    //     console.error("Error:", error);
-    //   });
-    console.log(password);
-    console.log(email);
-    axios
-      .post("http://localhost:5000/signup", {
-        email,
-        password,
-      })
-      .then((response) => {
-        console.log("Success:", response.data);
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 3000);
+    mode === "sign-up" ? await handleSignUp() : await handleLogin();
   }
 
   const handleLogin = async () => {
@@ -63,6 +35,7 @@ export function UserAuthForm({
       })
       .then((response) => {
         console.log("Success:", response.data);
+        window.location.href = "/dashboard";
       })
       .catch((error) => {
         console.error("Error:", error);
@@ -78,6 +51,7 @@ export function UserAuthForm({
       })
       .then((response) => {
         console.log("Success:", response.data);
+        window.location.href = "/dashboard";
       })
       .catch((error) => {
         console.error("Error:", error);

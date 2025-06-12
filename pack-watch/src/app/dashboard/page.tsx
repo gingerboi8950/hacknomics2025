@@ -19,12 +19,12 @@ export default function Page() {
   const handleAddRow = () => {
     const newRow = {
       id: tableData.length + 1,
-      header: "New Header",
-      type: "New Type",
-      status: "Pending",
-      target: "N/A",
-      limit: "N/A",
-      reviewer: "Unassigned",
+      expense: "N/A",
+      category: "N/A N",
+      price: "N/A",
+      date: "N/A",
+      status: "N/A",
+      reviewer: "N/A",
     }
 
     setTableData([...tableData, newRow])

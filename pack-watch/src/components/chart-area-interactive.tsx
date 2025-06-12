@@ -1,6 +1,15 @@
 "use client"
 
 import * as React from "react"
+
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
+import { DemoContainer, DemoItem } from '@mui/x-date-pickers/internals/demo';
+import dayjs, { Dayjs } from 'dayjs';
+
+import data from '../app/dashboard/data.json';
+
 import { Area, AreaChart, CartesianGrid, XAxis } from "recharts"
 
 import { useIsMobile } from "@/hooks/use-mobile"
@@ -141,40 +150,48 @@ const chartConfig = {
 } satisfies ChartConfig
 
 export function ChartAreaInteractive() {
-  const isMobile = useIsMobile()
-  const [timeRange, setTimeRange] = React.useState("90d")
+  // const isMobile = useIsMobile()
+  // const [timeRange, setTimeRange] = React.useState("90d")
 
-  React.useEffect(() => {
-    if (isMobile) {
-      setTimeRange("7d")
-    }
-  }, [isMobile])
+  // React.useEffect(() => {
+  //   if (isMobile) {
+  //     setTimeRange("7d")
+  //   }
+  // }, [isMobile])
 
-  const filteredData = chartData.filter((item) => {
-    const date = new Date(item.date)
-    const referenceDate = new Date("2024-06-30")
-    let daysToSubtract = 90
-    if (timeRange === "30d") {
-      daysToSubtract = 30
-    } else if (timeRange === "7d") {
-      daysToSubtract = 7
-    }
-    const startDate = new Date(referenceDate)
-    startDate.setDate(startDate.getDate() - daysToSubtract)
-    return date >= startDate
-  })
+  // const filteredData = chartData.filter((item) => {
+  //   const date = new Date(item.date)
+  //   const referenceDate = new Date("2024-06-30")
+  //   let daysToSubtract = 90
+  //   if (timeRange === "30d") {
+  //     daysToSubtract = 30
+  //   } else if (timeRange === "7d") {
+  //     daysToSubtract = 7
+  //   }
+  //   const startDate = new Date(referenceDate)
+  //   startDate.setDate(startDate.getDate() - daysToSubtract)
+  //   return date >= startDate
+  // })
+
+  const [selectedDate, setSelectedDate] = React.useState<Dayjs | null>(dayjs('2025-06-01'));
+  
+  // Format selected date to match the format in data.json
+  const formattedDate = selectedDate?.format('YYYY-MM-DD');
+
+  // Filter expenses by selected date
+  const filteredExpenses = data.filter((item) => item.date === formattedDate);
 
   return (
     <Card className="@container/card">
-      <CardHeader>
-        <CardTitle>Total Visitors</CardTitle>
-        <CardDescription>
+      <CardHeader className="pb-0">
+        <CardTitle className="text-xl mb-0 leading-tight">Calendar</CardTitle>
+        {/* <CardDescription>
           <span className="hidden @[540px]/card:block">
             Total for the last 3 months
           </span>
           <span className="@[540px]/card:hidden">Last 3 months</span>
-        </CardDescription>
-        <CardAction>
+        </CardDescription> */}
+        {/* <CardAction>
           <ToggleGroup
             type="single"
             value={timeRange}
@@ -206,10 +223,10 @@ export function ChartAreaInteractive() {
               </SelectItem>
             </SelectContent>
           </Select>
-        </CardAction>
+        </CardAction> */}
       </CardHeader>
-      <CardContent className="px-2 pt-4 sm:px-6 sm:pt-6">
-        <ChartContainer
+      <CardContent className="pt-0 px-1 sm:px-1">
+        {/* <ChartContainer
           config={chartConfig}
           className="aspect-auto h-[250px] w-full"
         >
@@ -285,7 +302,62 @@ export function ChartAreaInteractive() {
               stackId="a"
             />
           </AreaChart>
-        </ChartContainer>
+        </ChartContainer> */}
+
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <div className="p-0 flex flex-row gap-8 items-start">
+            <DemoItem>
+              <DateCalendar
+                value={selectedDate}
+                onChange={(newValue) => setSelectedDate(newValue)}
+                sx={{
+                width: 400, // widen the whole calendar container
+                '& .MuiPickersDay-root': {
+                  fontSize: '1.15rem', // make day numbers larger
+                  width: 48,
+                  height: 48,
+                },
+                '& .MuiDayCalendar-weekDayLabel': {
+                  width: 48,
+                  fontSize: '1rem',
+                },
+                '& .MuiTypography-root': {
+                  fontSize: '1.1rem', // month/year font size
+                },
+                '& .MuiPickersCalendarHeader-label': {
+                  fontSize: '1.3rem', // larger month label
+                },
+                '& .MuiPickersArrowSwitcher-root button': {
+                  fontSize: '1.3rem', // larger nav arrows
+                },
+                '& .MuiPickersSlideTransition-root': {
+                  minHeight: '320px',
+                },
+              }}
+              />
+            </DemoItem>
+
+            <div className="pt-0 w-full max-w-[1300px] mx-auto">
+              {filteredExpenses.length === 0 ? (
+                <p className="text-muted">No expenses for this date.</p>
+              ) : (
+                <ul className="pt-0 grid grid-cols-2 lg:grid-cols-4 gap-2">
+                  {filteredExpenses.map((expense) => (
+                    <li
+                      key={expense.id}
+                      className="border p-2 rounded shadow-sm w-[250px]"
+                    >
+                      <div><strong>Expense:</strong> {expense.expense}</div>
+                      <div><strong>Category:</strong> {expense.category}</div>
+                      <div><strong>Price:</strong> ${expense.price}</div>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          </div>
+        </LocalizationProvider>
+
       </CardContent>
     </Card>
   )

@@ -1,15 +1,14 @@
 "use client";
 
 import * as React from "react";
+import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { Icon } from "@/components/ui/icon";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useState } from "react";
-import axios from "axios";
-import { signIn } from "next-auth/react"; //  Import Google sign-in handler
 import { FcGoogle } from "react-icons/fc";
+import axios from "axios";
 
 interface UserAuthFormProps extends React.ComponentProps<"div"> {
   mode?: "sign-in" | "sign-up";
@@ -20,7 +19,7 @@ export function UserAuthForm({
   mode = "sign-in",
   ...props
 }: UserAuthFormProps) {
-  const [isLoading, setIsLoading] = React.useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -29,21 +28,22 @@ export function UserAuthForm({
     setIsLoading(true);
 
     const endpoint = mode === "sign-up" ? "signup" : "login";
-    axios
-      .post(`http://localhost:5000/${endpoint}`, { email, password })
-      .then((response) => {
-        console.log("Success:", response.data);
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-      })
-      .finally(() => {
-        setTimeout(() => setIsLoading(false), 3000);
+
+    try {
+      const response = await axios.post(`http://localhost:5000/${endpoint}`, {
+        email,
+        password,
       });
+      console.log("Success:", response.data);
+    } catch (error) {
+      console.error("Error:", error);
+    } finally {
+      setTimeout(() => setIsLoading(false), 3000);
+    }
   }
 
-  const handleGoogleAuth = () => {
-    window.location.href = 'http://localhost:5000/auth/google'; //  Initiates Google OAuth
+  const handleGoogleLogin = () => {
+    window.location.href = "http://localhost:5000/api/auth0/google";
   };
 
   return (
@@ -102,12 +102,13 @@ export function UserAuthForm({
         variant="outline"
         type="button"
         disabled={isLoading}
-        onClick={handleGoogleAuth}
+        onClick={handleGoogleLogin}
+        className="flex items-center justify-center gap-2"
       >
         {isLoading ? (
-          <Icon name="Loader2" className="mr-2 h-4 w-4 animate-spin" />
+          <Icon name="Loader2" className="h-4 w-4 animate-spin" />
         ) : (
-          <FcGoogle className="mr-2 h-4 w-4" /> // You can replace this with a Google icon
+          <FcGoogle className="h-5 w-5" />
         )}
         {mode === "sign-up" ? "Sign Up with Google" : "Sign In with Google"}
       </Button>

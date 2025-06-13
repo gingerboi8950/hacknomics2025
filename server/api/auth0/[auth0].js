@@ -1,6 +1,7 @@
 import express from 'express';
 import axios from 'axios';
 import dotenv from 'dotenv';
+import jwt from 'jsonwebtoken';
 
 dotenv.config();
 const router = express.Router();
@@ -16,6 +17,7 @@ router.get('/google/callback', async (req, res) => {
   const code = req.query.code;
 
   try {
+    // Exchange authorization code for tokens
     const tokenRes = await axios.post('https://oauth2.googleapis.com/token', {
       code,
       client_id: process.env.GOOGLE_CLIENT_ID,
@@ -26,17 +28,27 @@ router.get('/google/callback', async (req, res) => {
 
     const { access_token } = tokenRes.data;
 
+    // Get user info from Google
     const userRes = await axios.get('https://www.googleapis.com/oauth2/v2/userinfo', {
       headers: { Authorization: `Bearer ${access_token}` },
     });
 
     const user = userRes.data; // contains name, email, picture, etc.
-
-    // Here you'd create a session or JWT
     console.log('Authenticated user:', user);
 
-    // For now, just redirect to frontend
-    res.redirect('http://localhost:3001/dashboard');
+    // Create JWT
+    const jwtToken = jwt.sign(
+      {
+        email: user.email,
+        name: user.name,
+        picture: user.picture,
+      },
+      process.env.JWT_SECRET,
+      { expiresIn: '1h' }
+    );
+
+    // Redirect to frontend with token
+    res.redirect(`http://localhost:3001/dashboard?token=${jwtToken}`);
   } catch (err) {
     console.error('OAuth error:', err.response?.data || err.message);
     res.status(500).send('Authentication failed');

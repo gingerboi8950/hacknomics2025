@@ -1,6 +1,15 @@
 "use client"
 
 import * as React from "react"
+
+// import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+// import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+// import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
+// import { DemoContainer, DemoItem } from '@mui/x-date-pickers/internals/demo';
+// import dayjs, { Dayjs } from 'dayjs';
+
+// import data from '../app/dashboard/data.json';
+
 import { Area, AreaChart, CartesianGrid, XAxis } from "recharts"
 
 import { useIsMobile } from "@/hooks/use-mobile"
@@ -164,10 +173,18 @@ export function ChartAreaInteractive() {
     return date >= startDate
   })
 
+  // const [selectedDate, setSelectedDate] = React.useState<Dayjs | null>(dayjs('2025-06-01'));
+  
+  // // Format selected date to match the format in data.json
+  // const formattedDate = selectedDate?.format('YYYY-MM-DD');
+
+  // // Filter expenses by selected date
+  // const filteredExpenses = data.filter((item) => item.date === formattedDate);
+
   return (
     <Card className="@container/card">
-      <CardHeader>
-        <CardTitle>Total Visitors</CardTitle>
+      <CardHeader className="pb-0">
+        <CardTitle className="text-xl mb-0 leading-tight">Calendar</CardTitle>
         <CardDescription>
           <span className="hidden @[540px]/card:block">
             Total for the last 3 months
@@ -208,7 +225,7 @@ export function ChartAreaInteractive() {
           </Select>
         </CardAction>
       </CardHeader>
-      <CardContent className="px-2 pt-4 sm:px-6 sm:pt-6">
+      <CardContent className="pt-0 px-1 sm:px-1">
         <ChartContainer
           config={chartConfig}
           className="aspect-auto h-[250px] w-full"

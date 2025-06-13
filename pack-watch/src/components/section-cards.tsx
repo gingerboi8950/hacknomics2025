@@ -15,11 +15,11 @@ import initialData from "../app/dashboard/data.json"
 
 type SectionItem = {
   id: number
-  header: string
-  type: string
+  expense: string
+  category: string
+  price: string
+  date: string
   status: string
-  target: string
-  limit: string
   reviewer: string
 }
 

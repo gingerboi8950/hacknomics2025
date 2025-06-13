@@ -6,12 +6,14 @@ import { ChartAreaInteractive } from "@/components/chart-area-interactive"
 import { DataTable } from "@/components/data-table"
 import { SectionCards } from "@/components/section-cards"
 import { SiteHeader } from "@/components/site-header"
+import { CalendarDashboard } from "@/components/calendar-dashboard"
 import {
   SidebarInset,
   SidebarProvider,
 } from "@/components/ui/sidebar"
 
 import initialData from "./data.json"
+import { Calendar } from "lucide-react"
 
 export default function Page() {
   const [tableData, setTableData] = useState(initialData)
@@ -19,12 +21,12 @@ export default function Page() {
   const handleAddRow = () => {
     const newRow = {
       id: tableData.length + 1,
-      header: "New Header",
-      type: "New Type",
-      status: "Pending",
-      target: "N/A",
-      limit: "N/A",
-      reviewer: "Unassigned",
+      expense: "N/A",
+      category: "N/A N",
+      price: "N/A",
+      date: "N/A",
+      status: "N/A",
+      reviewer: "N/A",
     }
 
     setTableData([...tableData, newRow])
@@ -48,6 +50,9 @@ export default function Page() {
               <SectionCards tableData={tableData} onAddRow={handleAddRow} />
               <div className="px-4 lg:px-6">
                 <ChartAreaInteractive />
+              </div>
+              <div className="px-4 lg:px-6">
+                <CalendarDashboard />
               </div>
               <DataTable data={tableData} />
             </div>

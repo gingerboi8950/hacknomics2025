@@ -1,9 +1,10 @@
 import express from "express";
 import Expense from "../models/expenseModel.js";
+import authMiddleware from "../middleware/auth.js";
 
 const router = express.Router();
 
-router.post("/", async (req, res) => {
+router.post("/", authMiddleware, async (req, res) => {
   try {
     const { tag, name, cost, date } = req.body;
     const userId = req.user.id;
@@ -15,7 +16,7 @@ router.post("/", async (req, res) => {
   }
 });
 
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", authMiddleware, async (req, res) => {
   try {
     const { id } = req.params;
     const deletedExpense = await Expense.findByIdAndDelete(id);
@@ -29,7 +30,7 @@ router.delete("/:id", async (req, res) => {
   }
 });
 
-router.get("/", async (req, res) => {
+router.get("/", authMiddleware, async (req, res) => {
   try {
     const userId = req.user.id;
     const expenses = await Expense.find({ userId });

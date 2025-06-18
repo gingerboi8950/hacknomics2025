@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { Icon } from "@/components/ui/icon";
 import { Button } from "@/components/ui/button";
@@ -19,6 +20,7 @@ export function UserAuthForm({
   mode = "sign-in",
   ...props
 }: UserAuthFormProps) {
+  const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -34,9 +36,18 @@ export function UserAuthForm({
         email,
         password,
       });
-      console.log("Success:", response.data);
+
+      const token = response.data.token;
+
+      if (token) {
+        localStorage.setItem("token", token);
+        console.log("✅ Token stored:", token);
+        router.push("/dashboard"); // redirect to dashboard
+      } else {
+        console.warn("⚠️ No token received in response.");
+      }
     } catch (error) {
-      console.error("Error:", error);
+      console.error("❌ Error:", error);
     } finally {
       setTimeout(() => setIsLoading(false), 3000);
     }

@@ -5,6 +5,7 @@ import cors from "cors";
 import expenseRoutes from "./api/expenses.js";
 import userRoutes from "./api/users.js";
 import auth0 from "./api/auth0/[auth0].js";
+import { verifyToken } from "./middleware/verifytoken.js";
 
 dotenv.config();
 const DB_URI = process.env.DB_URI;
@@ -13,11 +14,18 @@ const app = express();
 
 app.use(express.json());
 app.use(cors());
+
+// Routes
 app.use("/", userRoutes);
 app.use("/api/expense", expenseRoutes);
 app.use("/api/auth0", auth0);
 
+// Protected route using JWT middleware
+app.get("/api/secure-data", verifyToken, (req, res) => {
+  res.json({ message: "This is protected data.", user: req.user });
+});
 
+// MongoDB connection
 ConnectToDB();
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 
@@ -25,7 +33,7 @@ async function ConnectToDB() {
   try {
     console.log("\nConnecting to MongoDB...\n");
     await mongoose.connect(DB_URI, { dbName: "ExpenseTrackerDB" });
-    console.log("\nConnected to MongoDB sucessfully.\n");
+    console.log("\nConnected to MongoDB successfully.\n");
   } catch (error) {
     console.error("\nConnection to MongoDB failed!\n", error);
     process.exit();

@@ -1,11 +1,16 @@
 'use client';
 
 import * as React from 'react';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
-import { DemoContainer, DemoItem } from '@mui/x-date-pickers/internals/demo';
 import dayjs, { Dayjs } from 'dayjs';
+import { AppSidebar } from "@/components/app-sidebar"
+import {
+  SidebarInset,
+  SidebarProvider,
+} from "@/components/ui/sidebar"
+
+import FullCalendar from '@fullcalendar/react'
+import dayGridPlugin from '@fullcalendar/daygrid'
+import interactionPlugin from '@fullcalendar/interaction'
 
 import data from '../dashboard/data.json';
 
@@ -18,61 +23,39 @@ export default function DateCalendarValue() {
   // Filter expenses by selected date
   const filteredExpenses = data.filter((item) => item.date === formattedDate);
 
-  return (
-    <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <div className="p-4 flex flex-col items-center">
-        <DemoItem label="Pick a date">
-          <div className="flex justify-center">
-            <DateCalendar
-              value={selectedDate}
-              onChange={(newValue) => setSelectedDate(newValue)}
-              sx={{
-                width: 400, // widen the whole calendar container
-                '& .MuiPickersDay-root': {
-                  fontSize: '1.25rem', // make day numbers larger
-                  width: 48,
-                  height: 48,
-                },
-                '& .MuiDayCalendar-weekDayLabel': {
-                  width: 48,
-                  fontSize: '1rem',
-                },
-                '& .MuiTypography-root': {
-                  fontSize: '1.2rem', // month/year font size
-                },
-                '& .MuiPickersCalendarHeader-label': {
-                  fontSize: '1.5rem', // larger month label
-                },
-                '& .MuiPickersArrowSwitcher-root button': {
-                  fontSize: '1.5rem', // larger nav arrows
-                },
-                '& .MuiPickersSlideTransition-root': {
-                  minHeight: '320px', // optional: make sure there's enough height
-                },
+  // Map data to calendar events
+  const events = data.map((item) => ({
+    title: item.expense,
+    date: item.date,
+  }));
+
+   return (
+    <SidebarProvider
+      style={
+        {
+          "--sidebar-width": "calc(var(--spacing) * 72)",
+          "--header-height": "calc(var(--spacing) * 12)",
+        } as React.CSSProperties
+      }
+    >
+      <AppSidebar variant="inset" />
+      <SidebarInset>
+        <div className="p-4 flex flex-col items-center">
+          <h1 className="text-2xl font-bold mb-4">Calendar</h1>
+
+          <div className="w-full max-w-4xl">
+            <FullCalendar
+              plugins={[dayGridPlugin, interactionPlugin]}
+              initialView="dayGridMonth"
+              events={events}
+              dateClick={(info) => {
+                setSelectedDate(dayjs(info.dateStr));
               }}
+              height="auto"
             />
           </div>
-        </DemoItem>
-
-        <div className="mt-4 w-full max-w-md">
-          <h2 className="text-lg font-semibold mb-2 text-center">
-            Expenses for {formattedDate}:
-          </h2>
-          {filteredExpenses.length === 0 ? (
-            <p className="text-muted">No expenses for this date.</p>
-          ) : (
-            <ul className="space-y-2">
-              {filteredExpenses.map((expense) => (
-                <li key={expense.id} className="border p-2 rounded shadow-sm">
-                  <div><strong>Expense:</strong> {expense.expense}</div>
-                  <div><strong>Category:</strong> {expense.category}</div>
-                  <div><strong>Price:</strong> ${expense.price}</div>
-                </li>
-              ))}
-            </ul>
-          )}
         </div>
-      </div>
-    </LocalizationProvider>
+      </SidebarInset>
+    </SidebarProvider>
   );
 }

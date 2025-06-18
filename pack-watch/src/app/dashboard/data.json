@@ -31,7 +31,7 @@
     "expense": "Technical approach",
     "category": "Narrative",
     "price": "27",
-    "date": "2025-06-01",
+    "date": "2025-06-15",
     "status": "Done",
     "reviewer": "Jamik Tashpulatov"
   },
@@ -40,7 +40,7 @@
     "expense": "Design",
     "category": "Narrative",
     "price": "2",
-    "date": "2025-06-01",
+    "date": "2025-06-15",
     "status": "Done",
     "reviewer": "Jamik Tashpulatov"
   },
@@ -49,7 +49,7 @@
     "expense": "Cover page",
     "category": "Cover page",
     "price": "18",
-    "date": "2025-06-01",
+    "date": "2025-06-12",
     "status": "In Process",
     "reviewer": "Eddie Lake"
   },
@@ -58,7 +58,7 @@
     "expense": "Table of contents",
     "category": "Table of contents",
     "price": "29",
-    "date": "2025-06-01",
+    "date": "2025-06-12",
     "status": "Done",
     "reviewer": "Eddie Lake"
   },
@@ -67,7 +67,7 @@
     "expense": "Executive summary",
     "category": "Narrative",
     "price": "10",
-    "date": "2025-06-01",
+    "date": "2025-06-02",
     "status": "Done",
     "reviewer": "Eddie Lake"
   },
@@ -76,7 +76,7 @@
     "expense": "Technical approach",
     "category": "Narrative",
     "price": "27",
-    "date": "2025-06-01",
+    "date": "2025-06-02",
     "status": "Done",
     "reviewer": "Jamik Tashpulatov"
   },
@@ -85,7 +85,7 @@
     "expense": "Design",
     "category": "Narrative",
     "price": "2",
-    "date": "2025-06-01",
+    "date": "2025-06-02",
     "status": "Done",
     "reviewer": "Jamik Tashpulatov"
   }

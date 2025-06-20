@@ -45,22 +45,22 @@ const data = {
   navMain: [
     {
       title: "Dashboard",
-      url: "#",
+      url: "http://localhost:3000/dashboard",
       icon: IconDashboard,
     },
     {
       title: "Calendar",
-      url: "#",
+      url: "http://localhost:3000/calendar",
       icon: IconCalendarWeek,
     },
     {
       title: "Expenses",
-      url: "#",
+      url: "http://localhost:3000/expenses",
       icon: IconCashBanknote,
     },
     {
       title: "Budget",
-      url: "#",
+      url: "http://localhost:3000/budget",
       icon: IconMoneybag,
     },
     {
